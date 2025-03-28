@@ -12,6 +12,7 @@ export default function AboutSection() {
     "Prototyping",
     "User Research",
     "Interaction Design",
+    "Machine Learning"
   ]
 
   return (
@@ -26,7 +27,7 @@ export default function AboutSection() {
               viewport={{ once: true, margin: "-100px" }}
             >
               <div className="relative aspect-square max-w-md mx-auto lg:mx-0 overflow-hidden about-art-stroke-shape">
-                <Image src="/placeholder.svg?height=600&width=600" alt="Profile" fill className="object-cover" />
+                <Image src="/my_photo.png?height=600&width=600" alt="Profile" fill className="object-contain" />
               </div>
             </motion.div>
           </ParallaxSection>
@@ -40,9 +41,11 @@ export default function AboutSection() {
             >
               <h2 className="text-4xl font-bold tracking-tight text-gray-900 mb-6">About Me</h2>
               <p className="text-lg text-gray-600 mb-6">
-                I'm a passionate designer and developer with over 5 years of experience creating digital products that
-                users love. My approach combines aesthetic sensibility with technical expertise to build solutions that
-                are both beautiful and functional.
+                A highly skilled and results-oriented software engineer with over six years of experience in the software
+                industry. Currently, in the placement year of my MSc in Data Science and Analytics, I possess strong
+                programming expertise and a solid foundation in data science, mathematics, and statistics. With a versatile
+                skill set spanning application development and data science, I thrive in dynamic environments and adapt 
+                easily to diverse work conditions. 
               </p>
               <p className="text-lg text-gray-600 mb-8">
                 Previously, I've worked with startups and established companies across various industries, helping them
@@ -97,7 +100,7 @@ export default function AboutSection() {
                   viewport={{ once: true }}
                   className="bg-white p-6 rounded-2xl shadow-sm"
                 >
-                  <h4 className="text-4xl font-bold text-gray-900 mb-2">50+</h4>
+                  <h4 className="text-4xl font-bold text-gray-900 mb-2">20+</h4>
                   <p className="text-gray-600">Projects Completed</p>
                 </motion.div>
               </div>

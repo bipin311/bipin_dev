@@ -70,7 +70,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               <Image src="/placeholder.svg?height=100&width=100" alt="Author" fill className="object-cover" />
             </div>
             <div className="ml-4">
-              <h3 className="font-bold">Alex Johnson</h3>
+              <h3 className="font-bold">Bipin Phaiju</h3>
               <p className="text-gray-600 text-sm">Designer & Developer</p>
             </div>
           </div>

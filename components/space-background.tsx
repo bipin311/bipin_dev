@@ -54,7 +54,7 @@ export default function SpaceBackground() {
     // Initialize stars
     function initStars() {
       stars = []
-      const starCount = Math.min(500, Math.floor((canvas.width * canvas.height) / 1500))
+      const starCount = Math.min(200, Math.floor((canvas.width * canvas.height) / 2000))
 
       for (let i = 0; i < starCount; i++) {
         stars.push({

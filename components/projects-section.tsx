@@ -1,51 +1,56 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import ParallaxSection from "./parallax-section"
+import { getProjects } from "@/lib/firebase"
 
-const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    category: "Web Development",
-    description: "A modern e-commerce platform with seamless checkout experience.",
-    image: "/placeholder.svg?height=600&width=800",
-  },
-  {
-    id: 2,
-    title: "Mobile Banking App",
-    category: "App Design",
-    description: "Intuitive mobile banking application with focus on security and user experience.",
-    image: "/placeholder.svg?height=600&width=800",
-  },
-  {
-    id: 3,
-    title: "Smart Home Dashboard",
-    category: "UI/UX Design",
-    description: "Comprehensive dashboard for controlling smart home devices.",
-    image: "/placeholder.svg?height=600&width=800",
-  },
-  {
-    id: 4,
-    title: "Fitness Tracking Platform",
-    category: "Web Development",
-    description: "Web platform for tracking fitness goals and progress.",
-    image: "/placeholder.svg?height=600&width=800",
-  },
-]
-
-const categories = ["All", "Web Development", "App Design", "UI/UX Design"]
+interface Project {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+}
 
 export default function ProjectsSection() {
+  const [projects, setProjects] = useState<Project[]>([])
   const [activeCategory, setActiveCategory] = useState("All")
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const projectsData = await getProjects()
+        setProjects(projectsData as Project[])
+      } catch (error) {
+        console.error("Error loading projects:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadProjects()
+  }, [])
+
+  const categories = ["All", "Web Development", "App Development", "Artificial Intelligence"]
 
   const filteredProjects =
     activeCategory === "All" ? projects : projects.filter((project) => project.category === activeCategory)
 
+  if (loading) {
+    return (
+      <section id="projects" className="w-full py-24 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">Loading projects...</div>
+        </div>
+      </section>
+    )
+  }
+
   return (
-    <section id="projects" className="w-full py-24 bg-black text-white">
+    <section id="projects" className="w-full py-24 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ParallaxSection offset={0.2}>
           <div className="text-center mb-16">
@@ -54,7 +59,7 @@ export default function ProjectsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               viewport={{ once: true, margin: "-100px" }}
-              className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4"
+              className="text-4xl md:text-5xl font-bold tracking-tight text-blue-500 mb-4"
             >
               My Work
             </motion.h2>
@@ -63,7 +68,7 @@ export default function ProjectsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               viewport={{ once: true, margin: "-100px" }}
-              className="text-xl text-gray-500 max-w-2xl mx-auto"
+              className="text-xl text-gray-400 max-w-2xl mx-auto"
             >
               Explore my recent projects and creative endeavors.
             </motion.p>
@@ -93,38 +98,8 @@ export default function ProjectsSection() {
 
         {/* Projects Carousel */}
         <div className="relative w-full">
-          <div className="overflow-x-auto pb-8 hide-scrollbar">
-            <div className="flex space-x-6 px-4 md:px-0 min-w-max">
-              {filteredProjects.map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  className="group relative w-[280px] md:w-[350px] flex-shrink-0"
-                >
-                  <ParallaxSection offset={0.1} className="aspect-w-16 aspect-h-9 w-full rounded-2xl overflow-hidden">
-                    <Image
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      width={800}
-                      height={600}
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </ParallaxSection>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-white rounded-2xl">
-                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                    <p className="text-sm text-gray-300 mb-2">{project.category}</p>
-                    <p className="text-sm">{project.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Optional: Add navigation arrows */}
-          <div className="absolute top-1/2 left-4 transform -translate-y-1/2 hidden md:block">
+          {/* Navigation Arrows */}
+          <div className="absolute top-1/2 -left-12 transform -translate-y-1/2 hidden md:block">
             <button
               className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
               onClick={() => {
@@ -147,7 +122,7 @@ export default function ProjectsSection() {
               </svg>
             </button>
           </div>
-          <div className="absolute top-1/2 right-4 transform -translate-y-1/2 hidden md:block">
+          <div className="absolute top-1/2 -right-12 transform -translate-y-1/2 hidden md:block">
             <button
               className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
               onClick={() => {
@@ -169,6 +144,36 @@ export default function ProjectsSection() {
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
+          </div>
+
+          <div className="overflow-x-auto pb-8 hide-scrollbar">
+            <div className="flex space-x-6 px-4 md:px-0 min-w-max">
+              {filteredProjects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  className="group relative w-[280px] md:w-[350px] flex-shrink-0"
+                >
+                  <ParallaxSection offset={0.1} className="aspect-w-16 aspect-h-9 w-full rounded-2xl overflow-hidden">
+                    <Image
+                      src={project.image || "/placeholder.svg"}
+                      alt={project.title}
+                      width={800}
+                      height={600}
+                      className="object-contain bg-gray-900 transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </ParallaxSection>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-white rounded-2xl">
+                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                    <p className="text-sm text-gray-300 mb-2">{project.category}</p>
+                    <p className="text-sm">{project.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

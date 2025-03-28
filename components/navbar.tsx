@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +23,18 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const handleSectionClick = (section: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    if (pathname !== "/") {
+      window.location.href = `/#${section}`
+    } else {
+      const sectionElement = document.getElementById(section)
+      if (sectionElement) {
+        sectionElement.scrollIntoView({ behavior: "smooth" })
+      }
+    }
+  }
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -29,8 +43,8 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4 md:py-6">
-          <Link href="/" className="text-2xl font-bold tracking-tight">
-            Portfolio
+          <Link href="/" className="text-2xl text-blue-500 font-bold tracking-tight">
+            Bipin.dev
           </Link>
 
           {/* Desktop Navigation */}
@@ -38,21 +52,33 @@ export default function Navbar() {
             <Link href="/" className="text-sm font-medium hover:opacity-70 transition-opacity">
               Home
             </Link>
-            <Link href="#projects" className="text-sm font-medium hover:opacity-70 transition-opacity">
+            <a
+              href="#projects"
+              onClick={(e) => handleSectionClick("projects", e)}
+              className="text-sm font-medium hover:opacity-70 transition-opacity cursor-pointer"
+            >
               Projects
-            </Link>
-            <Link href="#about" className="text-sm font-medium hover:opacity-70 transition-opacity">
+            </a>
+            <a
+              href="#about"
+              onClick={(e) => handleSectionClick("about", e)}
+              className="text-sm font-medium hover:opacity-70 transition-opacity cursor-pointer"
+            >
               About
-            </Link>
+            </a>
             <Link href="/blog" className="text-sm font-medium hover:opacity-70 transition-opacity">
               Blog
             </Link>
-            <Link href="#contact" className="text-sm font-medium hover:opacity-70 transition-opacity">
+            <a
+              href="#contact"
+              onClick={(e) => handleSectionClick("contact", e)}
+              className="text-sm font-medium hover:opacity-70 transition-opacity cursor-pointer"
+            >
               Contact
-            </Link>
+            </a>
             <div className="flex items-center space-x-4 ml-4">
               <Link
-                href="https://github.com"
+                href="https://github.com/bipin311"
                 target="_blank"
                 aria-label="GitHub"
                 className="hover:opacity-70 transition-opacity"
@@ -92,7 +118,7 @@ export default function Navbar() {
                 </svg>
               </Link>
               <Link
-                href="https://instagram.com"
+                href="https://www.instagram.com/bipinphaiju/"
                 target="_blank"
                 aria-label="Instagram"
                 className="hover:opacity-70 transition-opacity"
@@ -133,20 +159,26 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <Link
+            <a
               href="#projects"
-              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleSectionClick("projects", e)
+                setIsMenuOpen(false)
+              }}
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md cursor-pointer"
             >
               Projects
-            </Link>
-            <Link
+            </a>
+            <a
               href="#about"
-              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleSectionClick("about", e)
+                setIsMenuOpen(false)
+              }}
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md cursor-pointer"
             >
               About
-            </Link>
+            </a>
             <Link
               href="/blog"
               className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
@@ -154,13 +186,16 @@ export default function Navbar() {
             >
               Blog
             </Link>
-            <Link
+            <a
               href="#contact"
-              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleSectionClick("contact", e)
+                setIsMenuOpen(false)
+              }}
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md cursor-pointer"
             >
               Contact
-            </Link>
+            </a>
             <div className="flex space-x-4 px-3 py-2">
               <Link href="https://github.com" target="_blank" aria-label="GitHub">
                 <svg

@@ -75,20 +75,7 @@ export default function ContactSection() {
                   <Mail className="w-6 h-6 mr-4 text-gray-400" />
                   <div>
                     <h4 className="text-lg font-medium mb-1">Email</h4>
-                    <p className="text-gray-400">hello@example.com</p>
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                  viewport={{ once: true }}
-                  className="flex items-start"
-                >
-                  <Phone className="w-6 h-6 mr-4 text-gray-400" />
-                  <div>
-                    <h4 className="text-lg font-medium mb-1">Phone</h4>
-                    <p className="text-gray-400">+1 (555) 123-4567</p>
+                    <p className="text-gray-400">bipinphaiju@gmail.com</p>
                   </div>
                 </motion.div>
                 <motion.div
@@ -101,7 +88,7 @@ export default function ContactSection() {
                   <MapPin className="w-6 h-6 mr-4 text-gray-400" />
                   <div>
                     <h4 className="text-lg font-medium mb-1">Location</h4>
-                    <p className="text-gray-400">San Francisco, CA</p>
+                    <p className="text-gray-400">Coventry, UK</p>
                   </div>
                 </motion.div>
               </div>
@@ -182,7 +169,7 @@ export default function ContactSection() {
                   transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
                   viewport={{ once: true }}
                   type="submit"
-                  className="inline-flex items-center justify-center rounded-full bg-white text-black px-6 py-3 text-base font-medium hover:bg-gray-200 transition-colors duration-300"
+                  className="inline-flex items-center justify-center rounded-full bg-blue-500 text-black px-6 py-3 text-base font-medium hover:bg-gray-200 transition-colors duration-300"
                 >
                   <Send className="w-5 h-5 mr-2" />
                   Send Message
