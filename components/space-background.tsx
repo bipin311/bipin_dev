@@ -9,8 +9,12 @@ export default function SpaceBackground() {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
+  // alias to narrow nullability for inner functions
+  const el = canvas
+
+  const ctx = el.getContext("2d")
+  if (!ctx) return
+  const c = ctx
 
     let animationFrameId: number
     let time = 0
@@ -46,20 +50,20 @@ export default function SpaceBackground() {
 
     // Set canvas to full window size
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      el.width = window.innerWidth
+      el.height = window.innerHeight
       initStars()
     }
 
     // Initialize stars
     function initStars() {
       stars = []
-      const starCount = Math.min(200, Math.floor((canvas.width * canvas.height) / 2000))
+      const starCount = Math.min(200, Math.floor((el.width * el.height) / 2000))
 
       for (let i = 0; i < starCount; i++) {
         stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * el.width,
+          y: Math.random() * el.height,
           size: Math.random() * 1.5 + 0.5,
           opacity: Math.random() * 0.8 + 0.2,
           speed: Math.random() * 0.05 + 0.01,
@@ -79,7 +83,7 @@ export default function SpaceBackground() {
 
       return {
         x: 0, // Start at the left edge
-        y: Math.random() * (canvas.height * 0.7) + canvas.height * 0.15, // Random height but not too close to edges
+        y: Math.random() * (el.height * 0.7) + el.height * 0.15, // Random height but not too close to edges
         length: Math.random() * 80 + 50,
         speed: speed,
         angle: angle,
@@ -98,13 +102,13 @@ export default function SpaceBackground() {
       time += 0.005
 
       // Create gradient background
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+  const gradient = c.createLinearGradient(0, 0, 0, el.height)
       gradient.addColorStop(0, "#0f1016")
       gradient.addColorStop(1, "#1a1b26")
 
       // Fill background
-      ctx.fillStyle = gradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+  c.fillStyle = gradient
+  c.fillRect(0, 0, el.width, el.height)
 
       // Draw subtle nebula
       drawNebula()
@@ -124,21 +128,21 @@ export default function SpaceBackground() {
 
     // Draw subtle nebula
     function drawNebula() {
-      const nebulaGradient = ctx.createRadialGradient(
-        canvas.width * 0.5 + Math.sin(time * 0.1) * canvas.width * 0.1,
-        canvas.height * 0.5 + Math.cos(time * 0.1) * canvas.height * 0.1,
+      const nebulaGradient = c.createRadialGradient(
+        el.width * 0.5 + Math.sin(time * 0.1) * el.width * 0.1,
+        el.height * 0.5 + Math.cos(time * 0.1) * el.height * 0.1,
         0,
-        canvas.width * 0.5,
-        canvas.height * 0.5,
-        canvas.width * 0.8,
+        el.width * 0.5,
+        el.height * 0.5,
+        el.width * 0.8,
       )
 
       nebulaGradient.addColorStop(0, "rgba(63, 81, 181, 0.03)")
       nebulaGradient.addColorStop(0.5, "rgba(103, 58, 183, 0.02)")
       nebulaGradient.addColorStop(1, "rgba(0, 0, 0, 0)")
 
-      ctx.fillStyle = nebulaGradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      c.fillStyle = nebulaGradient
+      c.fillRect(0, 0, el.width, el.height)
     }
 
     // Draw stars with enhanced twinkling
@@ -148,17 +152,17 @@ export default function SpaceBackground() {
         star.y += star.speed * star.depth
 
         // Reset star position if it goes off screen
-        if (star.y > canvas.height) {
+        if (star.y > el.height) {
           star.y = 0
-          star.x = Math.random() * canvas.width
+          star.x = Math.random() * el.width
         }
 
         // Enhanced twinkle effect - more pronounced and varied
         const twinkle = 0.3 + Math.sin(time * star.twinkleSpeed + star.twinkleOffset) * 0.7
         const finalOpacity = star.opacity * twinkle
 
-        // Draw star with slight color variation for some stars
-        let starColor = `rgba(255, 255, 255, ${finalOpacity})`
+  // Draw star with slight color variation for some stars
+  let starColor = `rgba(255, 255, 255, ${finalOpacity})`
 
         // Add slight color tint to some stars
         if (star.size > 1.2 && Math.random() < 0.3) {
@@ -166,20 +170,20 @@ export default function SpaceBackground() {
           starColor = `hsla(${hue}, 50%, 80%, ${finalOpacity})`
         }
 
-        ctx.beginPath()
-        ctx.arc(star.x, star.y, star.size * (star.depth / 3), 0, Math.PI * 2)
-        ctx.fillStyle = starColor
-        ctx.fill()
+  c.beginPath()
+  c.arc(star.x, star.y, star.size * (star.depth / 3), 0, Math.PI * 2)
+  c.fillStyle = starColor
+  c.fill()
 
         // Add subtle glow to brighter stars
         if (star.size > 1 && twinkle > 0.7) {
-          ctx.beginPath()
-          ctx.arc(star.x, star.y, star.size * 3 * (star.depth / 3), 0, Math.PI * 2)
-          const glow = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 3 * (star.depth / 3))
+          c.beginPath()
+          c.arc(star.x, star.y, star.size * 3 * (star.depth / 3), 0, Math.PI * 2)
+          const glow = c.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 3 * (star.depth / 3))
           glow.addColorStop(0, `rgba(255, 255, 255, ${finalOpacity * 0.5})`)
           glow.addColorStop(1, "rgba(255, 255, 255, 0)")
-          ctx.fillStyle = glow
-          ctx.fill()
+          c.fillStyle = glow
+          c.fill()
         }
       })
     }
@@ -205,7 +209,7 @@ export default function SpaceBackground() {
         }
 
         // Deactivate if off screen (right side)
-        if (star.x > canvas.width) {
+        if (star.x > el.width) {
           star.active = false
         }
       })
@@ -219,16 +223,16 @@ export default function SpaceBackground() {
       shootingStars.forEach((star) => {
         if (!star.active || star.trail.length < 2) return
 
-        // Draw trail
-        ctx.beginPath()
-        ctx.moveTo(star.trail[0].x, star.trail[0].y)
+  // Draw trail
+  c.beginPath()
+  c.moveTo(star.trail[0].x, star.trail[0].y)
 
         for (let i = 1; i < star.trail.length; i++) {
-          ctx.lineTo(star.trail[i].x, star.trail[i].y)
+          c.lineTo(star.trail[i].x, star.trail[i].y)
         }
 
         // Create gradient for trail
-        const gradient = ctx.createLinearGradient(
+        const gradient = c.createLinearGradient(
           star.trail[0].x,
           star.trail[0].y,
           star.trail[star.trail.length - 1].x,
@@ -239,26 +243,27 @@ export default function SpaceBackground() {
         gradient.addColorStop(0.3, `rgba(255, 255, 255, 0.3)`)
         gradient.addColorStop(1, `rgba(255, 255, 255, 0.8)`)
 
-        ctx.strokeStyle = gradient
-        ctx.lineWidth = star.size
-        ctx.lineCap = "round"
-        ctx.stroke()
+  c.strokeStyle = gradient
+  c.lineWidth = star.size
+  c.lineCap = "round"
+  c.stroke()
 
         // Draw bright head
-        const head = star.trail[star.trail.length - 1]
-        ctx.beginPath()
-        ctx.arc(head.x, head.y, star.size * 1.5, 0, Math.PI * 2)
-        ctx.fillStyle = "rgba(255, 255, 255, 0.8)"
-        ctx.fill()
+
+  const head = star.trail[star.trail.length - 1]
+  c.beginPath()
+  c.arc(head.x, head.y, star.size * 1.5, 0, Math.PI * 2)
+  c.fillStyle = "rgba(255, 255, 255, 0.8)"
+  c.fill()
 
         // Add glow to head
-        ctx.beginPath()
-        ctx.arc(head.x, head.y, star.size * 4, 0, Math.PI * 2)
-        const glow = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, star.size * 4)
+        c.beginPath()
+        c.arc(head.x, head.y, star.size * 4, 0, Math.PI * 2)
+        const glow = c.createRadialGradient(head.x, head.y, 0, head.x, head.y, star.size * 4)
         glow.addColorStop(0, "rgba(255, 255, 255, 0.4)")
         glow.addColorStop(1, "rgba(255, 255, 255, 0)")
-        ctx.fillStyle = glow
-        ctx.fill()
+        c.fillStyle = glow
+        c.fill()
       })
     }
 
